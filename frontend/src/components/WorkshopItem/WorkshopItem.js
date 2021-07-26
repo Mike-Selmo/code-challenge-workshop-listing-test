@@ -11,11 +11,11 @@ class WorkshopItem extends Component {
   likeClickHandler (ev) {
     console.log('like');
     if (!this.props.preferred) {
-      fetch (`http://localhost:3000/api/v1/users/workshops/liked/${this.props.id}`, { headers: {Authorization: `Bearer ${localStorage.getItem('token')}`}, method: 'POST' })
+      fetch (`http://localhost:3000/api/v1/users/workshops/liked/${this.props._id}`, { headers: {Authorization: `Bearer ${localStorage.getItem('token')}`}, method: 'POST' })
       .then ( (resp) => {
         if (resp.status === 200) {
           console.log ('Workshop Item added to preferred workshops !');
-          this.props.selfUnmount(this.props.id);
+          this.props.selfUnmount(this.props._id);
         }
         else {
           console.log(`Status returned ${resp.status}`); }
@@ -41,7 +41,7 @@ class WorkshopItem extends Component {
             <h2 className="title">{this.props.name}</h2>
           </div>
           <div className="middle">
-            <img className="workshop-img" src={this.props.img} alt="" />
+            <img className="workshop-img" src={this.props.picture} alt="" />
           </div>
           <div className="down">
             <div className={this.props.preferred ? "hidden": ""}>

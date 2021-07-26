@@ -64,12 +64,12 @@ class WorkshopDisplay extends Component {
     })
     .then ( (resp) =>  resp.json() )
     .then ( (data) => {
-      console.log(data);
-      // data is a list of workshops
       // TODO-code-challenge: Core Functionality: As a User, I can display the list of workshops sorted by distance
-      // this.setState({
-      //   data: <div>List of workshops</div>
-      // })
+      this.setState({data : <div> {
+      data.map((item,i) => <WorkshopItem key={i} {...item} />
+      )}
+      </div>
+      })
     })
     .catch( (err) => {
       console.error(err);
