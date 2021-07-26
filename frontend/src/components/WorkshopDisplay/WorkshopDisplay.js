@@ -103,7 +103,8 @@ class WorkshopDisplay extends Component {
       }
 
     } else if (mode === '/workshops/preferred') {
-      // TODO-code-challenge: Bonus: As a User, I can display the list of preferred workshops
+      url = `http://localhost:3000/api/v1/workshops/preferred`;
+      this.fetchWorkshops(url);
     } else {
       this.props.history.push('/workshops/nearby');
     }

@@ -52,8 +52,13 @@ exports.getNearby = async (id, longitude, latitude) => {
         if (workshops[i]._id.toString() === sp.workshopId.toString()) {
           if (sp.likedTime) {
             // TODO-code-challenge: Secondary Functionality: As a User, I can like a workshop, so it can be added to my preferred workshops
+            workshops.splice(i, 1);
           } else if (sp.dislikedTime) {
             // TODO-code-challenge: Bonus: As a User, I can dislike a workshop, so it won’t be displayed within “Nearby WorkShops” list during the next 2 hours
+            let hours = moment().diff(moment(sp.dislikedTime), 'hours');
+            if( hours < 2){
+              workshops.splice(i, 1);
+            }
           }
         }
       }

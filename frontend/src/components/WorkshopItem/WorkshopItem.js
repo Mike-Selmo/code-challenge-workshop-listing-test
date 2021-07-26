@@ -3,7 +3,12 @@ import React, { Component } from 'react';
 import './WorkshopItem.css';
 
 class WorkshopItem extends Component {
-
+  constructor(props) {
+    super(props);
+    this.state = {
+      showWorkshop: true,
+    };
+  }
   componentWillUnmount () {
     console.log('Unmounting workshop item ');
   }
@@ -14,8 +19,8 @@ class WorkshopItem extends Component {
       fetch (`http://localhost:3000/api/v1/users/workshops/liked/${this.props._id}`, { headers: {Authorization: `Bearer ${localStorage.getItem('token')}`}, method: 'POST' })
       .then ( (resp) => {
         if (resp.status === 200) {
-          console.log ('Workshop Item added to preferred workshops !');
-          this.props.selfUnmount(this.props._id);
+          console.log (`Workshop ${this.props._id} added to preferred workshops !`);
+          this.setState({showWorkshop:false});
         }
         else {
           console.log(`Status returned ${resp.status}`); }
@@ -35,25 +40,29 @@ class WorkshopItem extends Component {
   }
 
   render() {
-    return (
-      <article className="workshop-item">
-          <div className="up">
-            <h2 className="title">{this.props.name}</h2>
-          </div>
-          <div className="middle">
-            <img className="workshop-img" src={this.props.picture} alt="" />
-          </div>
-          <div className="down">
-            <div className={this.props.preferred ? "hidden": ""}>
-              <button className="workshop-btn dislike-btn" onClick={this.dislikeClickHandler.bind(this)}>Dislike</button>
-              <button className="workshop-btn like-btn" onClick={this.likeClickHandler.bind(this)}>Like</button>
+    if(this.state.showWorkshop){
+      return (
+        <article className="workshop-item">
+            <div className="up">
+              <h2 className="title">{this.props.name}</h2>
             </div>
-            <div className={this.props.preferred ? "": "hidden"}>
-              <button className="workshop-btn remove-btn" onClick={this.removeClickHandler.bind(this)}>Remove</button>
+            <div className="middle">
+              <img className="workshop-img" src={this.props.picture} alt="" />
             </div>
-          </div>
-      </article>
-    );
+            <div className="down">
+              <div className={this.props.preferred ? "hidden": ""}>
+                <button className="workshop-btn dislike-btn" onClick={this.dislikeClickHandler.bind(this)}>Dislike</button>
+                <button className="workshop-btn like-btn" onClick={this.likeClickHandler.bind(this)}>Like</button>
+              </div>
+              <div className={this.props.preferred ? "": "hidden"}>
+                <button className="workshop-btn remove-btn" onClick={this.removeClickHandler.bind(this)}>Remove</button>
+              </div>
+            </div>
+        </article>
+      );
+    } else {
+      return null;
+    }
   }
 }
 

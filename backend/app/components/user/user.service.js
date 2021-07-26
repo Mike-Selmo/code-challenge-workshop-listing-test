@@ -52,7 +52,15 @@ exports.getDislikedWorkshops = async (id) => {
 };
 
 exports.likeWorkshop = async (idUser, workshop) => {
-  // TODO-code-challenge: Secondary Functionality: As a User, I can like a workshop, so it can be added to my preferred workshops
+  try {
+    let user = await User.findById(idUser);
+    user.likedWorkshops.push({workshopId:workshop._id});
+    await user.save();
+    return true;
+  } catch (err) {
+    winston.error(`User Service: updating liked workshops for user ${idUser}` );
+    return false;
+  }
 };
 
 exports.unlikeWorkshop = async (idUser, workshop) => {
@@ -79,4 +87,13 @@ exports.unlikeWorkshop = async (idUser, workshop) => {
 
 exports.dislikeWorkshop = async (idUser, workshop) => {
   // TODO-code-challenge: Bonus: As a User, I can dislike a workshop, so it won’t be displayed within “Nearby WorkShops” list during the next 2 hours
+  try {
+    let user = await User.findById(idUser);
+    user.dislikedWorkshops.push({workshopId:workshop._id});
+    await user.save();
+    return true;
+  } catch (err) {
+    winston.error(`User Service: updating disliked workshops for user ${idUser}` );
+    return false;
+  }
 };
