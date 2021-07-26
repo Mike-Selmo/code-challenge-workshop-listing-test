@@ -9,7 +9,6 @@ class WorkshopDisplay extends Component {
     console.log('Constructing WorkshopDisplay ...');
     super(props);
 
-    // TODO-code-challenge: Bonus: As a User, I can display the list of preferred workshops
     this.state = {
       data: []
     };
@@ -56,15 +55,13 @@ class WorkshopDisplay extends Component {
   }
 
   fetchWorkshops (url) {
-    let workshops = [];
-    let isPreferred = !url.includes('nearby');
     fetch(url, {
       method: 'GET',
       headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
     })
     .then ( (resp) =>  resp.json() )
     .then ( (data) => {
-      // TODO-code-challenge: Core Functionality: As a User, I can display the list of workshops sorted by distance
+      // Core Functionality: A User can display the list of workshops sorted by distance
       this.setState({data : <div> {
       data.map((item,i) => <WorkshopItem key={i} {...item} />
       )}

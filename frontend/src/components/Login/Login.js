@@ -39,7 +39,7 @@ class Login extends Component {
   submitHandler(ev) {
     ev.preventDefault();
 
-    // @TODO-code-challenge: Core Functionality: As a User, I can sign in using my email & password
+    // Core Functionality: As a User, I can sign in using my email & password
     // Update fields based on user input
     let email = this.state.email;
     let password = this.state.password;
@@ -96,7 +96,7 @@ class Login extends Component {
       <div className="Login">
         <h1>Login</h1>
         <form onSubmit={this.submitHandler}>
-            {/* @TODO-code-challenge: Core Functionality: As a User, I can sign in using my email & password */}
+            {/*Core Functionality: A User can sign in using their email & password */}
             <div className="field">
               <label htmlFor="email">E-mail: </label>
               <input type="email" name="email" required placeholder="valid e-mail" onChange={this.handleInputChange}/>

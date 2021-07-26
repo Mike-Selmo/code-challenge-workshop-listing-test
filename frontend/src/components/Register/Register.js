@@ -15,7 +15,7 @@ class Register extends Component {
       password: ""
     };
 
-    //Creating a ref as this is the only way i know of to set focus dynamically
+    //Creating a ref as this is the only way I know of to set focus dynamically
     this.passwordRef = React.createRef();
     this.submitHandler = this.submitHandler.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);  
@@ -32,8 +32,7 @@ class Register extends Component {
     ev.preventDefault();
     console.log('Submitting form ...');
 
-    // @TODO-code-challenge: Core Functionality: As a User, I can sign up using my email & password
-    // Update fields based on user input
+    // Core Functionality: A User can sign up using their email & password
     let name = this.state.name;
     let email = this.state.email;;
     let password = this.state.password;
@@ -83,7 +82,7 @@ class Register extends Component {
       <div className="Register">
         <h1>Register</h1>
         <form onSubmit={this.submitHandler}>
-            {/* // @TODO-code-challenge: Core Functionality: As a User, I can sign up using my email & password */}
+            {/*Core Functionality: A User can sign up using my name, email & password */}
             <div className="field">
               <label htmlFor="name">Names: </label>
               <input type="text" name="name" required placeholder="name" onChange={this.handleInputChange}/>
