@@ -9,12 +9,23 @@ class Register extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      error: ""
+      error: "",
+      name: "",
+      email: "",
+      password: ""
     };
+
+    //Creating a ref as this is the only way i know of to set focus dynamically
+    this.passwordRef = React.createRef();
     this.submitHandler = this.submitHandler.bind(this);
+    this.handleInputChange = this.handleInputChange.bind(this);  
   }
 
   componentWillMount() {
+  }
+
+  handleInputChange(ev) {
+    this.setState({ [ev.target.name]: ev.target.value });
   }
 
   submitHandler(ev) {
@@ -23,13 +34,19 @@ class Register extends Component {
 
     // @TODO-code-challenge: Core Functionality: As a User, I can sign up using my email & password
     // Update fields based on user input
-    let name = "";
-    let email = "";
-    let password = "";
+    let name = this.state.name;
+    let email = this.state.email;;
+    let password = this.state.password;
 
     if (password.length < 8) {
-      this.passwordInput.value = "";
-      this.passwordInput.focus();
+      this.setState({
+        password: "",
+        error: "Password must be at least 8 characters.",
+      })
+      //Since we are using a ref to allow us to set focus on an invalid password
+      //We will need to set the value in the ref as well as the state to reset it.
+      this.passwordRef.current.value = "";
+      this.passwordRef.current.focus();
       return;
     }
 
