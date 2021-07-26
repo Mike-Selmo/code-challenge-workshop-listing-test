@@ -57,12 +57,7 @@ exports.signInHandler = (req, resp) => {
 
 };
 
-
-exports.getLikedHandler = async (req, resp) => {
-  // TODO-code-challenge: Bonus: As a User, I can display the list of preferred workshops
-  // See userService.getLikedWorkshops
-  resp.status(200).json([]);
-};
+//Removed getliked handler as I handled this in the workshops controller with getPreferred
 
 exports.addToLikedHandler = async (req, resp) => {
   let idWorkshop = req.params.id;
@@ -83,11 +78,34 @@ exports.addToLikedHandler = async (req, resp) => {
 
 
 exports.removeFromLikedHandler = async (req, resp) => {
-  // TODO-code-challenge: Bonus: As a User, I can remove a workshop from my preferred workshops list
-  resp.status(200).json();
+  let idWorkshop = req.params.id;
+  let idUser = req.token.id;
+  winston.debug(`Removing workshop ${idWorkshop} to Liked list of user ${idUser}`);
+
+  let workshop = await workshopService.getById(idWorkshop);
+  if (workshop === false || workshop === null) {
+    resp.status(500).json();
+  }
+  if (await userService.unlikeWorkshop(idUser, workshop) ) {
+    resp.status(200).json();
+  } else {
+    resp.status(500).json();
+  }  resp.status(200).json();
 };
 
 exports.addToDislikedHandler = async (req, resp) => {
-  // TODO-code-challenge: Bonus: As a User, I can dislike a workshop, so it won’t be displayed within “Nearby WorkShops” list during the next 2 hours
+  let idWorkshop = req.params.id;
+  let idUser = req.token.id;
+  winston.debug(`Adding workshop ${idWorkshop} to disliked list of user ${idUser}`);
+
+  let workshop = await workshopService.getById(idWorkshop);
+  if (workshop === false || workshop === null) {
+    resp.status(500).json();
+  }
+  if (await userService.dislikeWorkshop(idUser, workshop) ) {
+    resp.status(200).json();
+  } else {
+    resp.status(500).json();
+  }  resp.status(200).json();
   resp.status(200).json();
 };

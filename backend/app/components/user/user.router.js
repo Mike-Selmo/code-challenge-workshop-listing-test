@@ -8,8 +8,6 @@ module.exports = (auth) => {
   router.post('/sign-up', userController.signUpHandler);
   router.post('/sign-in', userController.signInHandler);
 
-  router.get('/workshops/liked', auth, userController.getLikedHandler);
-
   router.post('/workshops/liked/:id', auth, userController.addToLikedHandler);
   router.delete('/workshops/liked/:id', auth, userController.removeFromLikedHandler);
   router.post('/workshops/disliked/:id', auth, userController.addToDislikedHandler);

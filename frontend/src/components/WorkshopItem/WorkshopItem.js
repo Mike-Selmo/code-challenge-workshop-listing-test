@@ -14,7 +14,6 @@ class WorkshopItem extends Component {
   }
 
   likeClickHandler (ev) {
-    console.log('like');
     if (!this.props.preferred) {
       fetch (`http://localhost:3000/api/v1/users/workshops/liked/${this.props._id}`, { headers: {Authorization: `Bearer ${localStorage.getItem('token')}`}, method: 'POST' })
       .then ( (resp) => {
@@ -32,11 +31,35 @@ class WorkshopItem extends Component {
   }
 
   dislikeClickHandler (ev) {
-    // TODO-code-challenge: Bonus: As a User, I can dislike a workshop, so it won’t be displayed within “Nearby WorkShops” list during the next 2 hours
+    fetch (`http://localhost:3000/api/v1/users/workshops/disliked/${this.props._id}`, { headers: {Authorization: `Bearer ${localStorage.getItem('token')}`}, method: 'POST' })
+    .then ( (resp) => {
+      if (resp.status === 200) {
+        console.log (`Workshop ${this.props._id} added to user's disliked workshops !`);
+        this.setState({showWorkshop:false});
+      }
+      else {
+        console.log(`Status returned ${resp.status}`); }
+      } )
+    .catch( (err) => {
+      console.error(err);
+    } );
   }
 
   removeClickHandler (ev) {
-    // TODO-code-challenge: Bonus: As a User, I can remove a workshop from my preferred workshops list
+    if (this.props.preferred) {
+      fetch (`http://localhost:3000/api/v1/users/workshops/liked/${this.props._id}`, { headers: {Authorization: `Bearer ${localStorage.getItem('token')}`}, method: 'DELETE' })
+      .then ( (resp) => {
+        if (resp.status === 200) {
+          console.log (`Workshop ${this.props._id} removed from preferred workshops !`);
+          this.setState({showWorkshop:false});
+        }
+        else {
+          console.log(`Status returned ${resp.status}`); }
+        } )
+      .catch( (err) => {
+        console.error(err);
+      } );
+    }
   }
 
   render() {
