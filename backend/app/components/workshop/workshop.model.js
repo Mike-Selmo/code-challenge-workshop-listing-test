@@ -13,6 +13,12 @@ const WorkshopSchema = new Schema({
     coordinates: [Number]
   }
 });
+WorkshopSchema.set('toObject', { virtuals: true })
+WorkshopSchema.set('toJSON', { virtuals: true })
+
+WorkshopSchema.virtual('preferred')
+.get(function() { return this._preferred; })
+.set(function(pref) { this._preferred = pref; });
 
 const Workshop = mongoose.model('Workshop', WorkshopSchema);
 

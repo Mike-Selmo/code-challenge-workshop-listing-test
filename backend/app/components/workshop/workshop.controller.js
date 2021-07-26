@@ -14,3 +14,13 @@ exports.getNearby = async (req, resp) => {
     resp.status(200).json(workshops);
   }
 };
+
+exports.getPreferred = async (req, resp) => {
+  winston.debug(`Getting preferred workshops for user ${req.token.id}`);
+  let workshops = await workshopService.getPreferred(req.token.id);
+  if (workshops === false) {
+    resp.status(500).json();
+  } else {
+    resp.status(200).json(workshops);
+  }
+};

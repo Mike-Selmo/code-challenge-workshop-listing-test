@@ -8,7 +8,6 @@ const userService = require('../user/user.service');
 
 const Workshop = require('./workshop.model');
 
-
 exports.getById = async (id) => {
   try {
     winston.debug(`Workshop service getting by id ${id}`);
@@ -52,8 +51,13 @@ exports.getNearby = async (id, longitude, latitude) => {
         if (workshops[i]._id.toString() === sp.workshopId.toString()) {
           if (sp.likedTime) {
             // TODO-code-challenge: Secondary Functionality: As a User, I can like a workshop, so it can be added to my preferred workshops
+            workshops.splice(i, 1);
           } else if (sp.dislikedTime) {
             // TODO-code-challenge: Bonus: As a User, I can dislike a workshop, so it won’t be displayed within “Nearby WorkShops” list during the next 2 hours
+            let hours = moment().diff(moment(sp.dislikedTime), 'hours');
+            if( hours < 2){
+              workshops.splice(i, 1);
+            }
           }
         }
       }
@@ -65,3 +69,27 @@ exports.getNearby = async (id, longitude, latitude) => {
     return false;
   }
 };
+
+exports.getPreferred = async (id) => {
+  try {
+  workshops = await Workshop.find();
+  let likedWorkshops = await userService.getLikedWorkshops(id);
+  respWorkshops = [];
+  for (let i = 0 ; i < workshops.length ; i++) {
+    for (let li of likedWorkshops) {
+      if (workshops[i]._id.toString() === li.workshopId.toString()) {
+        if (li.likedTime) {
+          //Setting a virtual value for preferred to change front end like button
+          workshops[i].set('preferred', true);
+          respWorkshops.push(workshops[i]);
+        }
+      }
+    }
+  }
+     return respWorkshops;
+  } catch (err) {
+    winston.error(`Workshop Service: Error getting preferred workshops`);
+    winston.debug(err);
+    return false;
+  }
+}
