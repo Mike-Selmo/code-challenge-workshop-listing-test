@@ -8,7 +8,6 @@ const userService = require('../user/user.service');
 
 const Workshop = require('./workshop.model');
 
-
 exports.getById = async (id) => {
   try {
     winston.debug(`Workshop service getting by id ${id}`);
@@ -70,3 +69,27 @@ exports.getNearby = async (id, longitude, latitude) => {
     return false;
   }
 };
+
+exports.getPreferred = async (id) => {
+  try {
+  workshops = await Workshop.find();
+  let likedWorkshops = await userService.getLikedWorkshops(id);
+  respWorkshops = [];
+  for (let i = 0 ; i < workshops.length ; i++) {
+    for (let li of likedWorkshops) {
+      if (workshops[i]._id.toString() === li.workshopId.toString()) {
+        if (li.likedTime) {
+          //Setting a virtual value for preferred to change front end like button
+          workshops[i].set('preferred', true);
+          respWorkshops.push(workshops[i]);
+        }
+      }
+    }
+  }
+     return respWorkshops;
+  } catch (err) {
+    winston.error(`Workshop Service: Error getting preferred workshops`);
+    winston.debug(err);
+    return false;
+  }
+}
