@@ -54,6 +54,7 @@ exports.getDislikedWorkshops = async (id) => {
 exports.likeWorkshop = async (idUser, workshop) => {
   try {
     let user = await User.findById(idUser);
+    //If we just save the workshop id - the schema will default the time to now
     user.likedWorkshops.push({workshopId:workshop._id});
     await user.save();
     return true;
@@ -86,9 +87,10 @@ exports.unlikeWorkshop = async (idUser, workshop) => {
 };
 
 exports.dislikeWorkshop = async (idUser, workshop) => {
-  // TODO-code-challenge: Bonus: As a User, I can dislike a workshop, so it won’t be displayed within “Nearby WorkShops” list during the next 2 hours
+  // Bonus: As a User, I can dislike a workshop, so it won’t be displayed within “Nearby WorkShops” list during the next 2 hours
   try {
     let user = await User.findById(idUser);
+    //If we just save the workshop id - the schema will default the time to now
     user.dislikedWorkshops.push({workshopId:workshop._id});
     await user.save();
     return true;
